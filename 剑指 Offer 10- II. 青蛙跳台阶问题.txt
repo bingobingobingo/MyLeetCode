@@ -1,4 +1,4 @@
-/*超出时间限制
+/*瓒呭嚭鏃堕棿闄愬埗
 func numWays(n int) int {
     if n < 2 {
         return 1
