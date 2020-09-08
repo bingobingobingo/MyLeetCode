@@ -1,0 +1,39 @@
+type CQueue struct {
+    stackAdd []int
+    stackDel []int
+}
+
+
+func Constructor() CQueue {
+    return CQueue{}
+}
+
+
+func (this *CQueue) AppendTail(value int)  {
+    this.stackAdd = append(this.stackAdd, value)
+}
+
+
+func (this *CQueue) DeleteHead() int {
+    if len(this.stackDel) == 0 {
+        if len(this.stackAdd)== 0 {
+            return -1
+        }
+        for i:=len(this.stackAdd); i>0; i-- {
+            endValue := this.stackAdd[i-1]
+            this.stackDel = append(this.stackDel, endValue)
+            this.stackAdd = this.stackAdd[:i-1]
+        }
+    }
+    head := this.stackDel[len(this.stackDel) - 1]
+    this.stackDel = this.stackDel[:len(this.stackDel) - 1]
+    return head
+}
+
+
+/**
+ * Your CQueue object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.AppendTail(value);
+ * param_2 := obj.DeleteHead();
+ */
