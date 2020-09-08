@@ -1,4 +1,4 @@
-//±©Á¦±È½Ï
+ï»¿//æš´åŠ›æ¯”è¾ƒ
 func minArray(numbers []int) int {
     for i := 0; i < len(numbers)-1; i++ {
         if numbers[i] > numbers[i+1] {
@@ -8,7 +8,7 @@ func minArray(numbers []int) int {
     return numbers[0]
 }
 
-//¶þ·Ö·¨
+//äºŒåˆ†æ³•
 func minArray(numbers []int) int {
     left := 0
     right := len(numbers)-1
