@@ -1,0 +1,27 @@
+//首尾双指针
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> res;
+        int low = 0;
+        int high = nums.size() - 1;
+        if(high<1) return res;
+        while(nums[high] > target){
+            high--;
+        }
+        int sum = 0;
+        while(low<high){
+            sum = nums[low] + nums[high];
+            if(sum ==  target) {
+                res.push_back(nums[low]);
+                res.push_back(nums[high]);
+                return res;
+            } else if(sum < target) {
+                low++;
+            } else{
+                high--;
+            } 
+        }
+        return res;
+    }
+};

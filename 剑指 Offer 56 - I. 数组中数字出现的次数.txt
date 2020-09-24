@@ -1,0 +1,32 @@
+//两次异或运算
+//第一次的结果来划分两个数组
+//第二次在两个数组中分别找出两个数
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        vector<int> res;
+        int single = 0;
+        for (int n : nums) {
+            single ^= n;
+        }
+        int digit = 0;
+		//从右到左，找到第一个不相同的位
+        while((single & 1) == 0){
+            digit++;
+            single = single >> 1;
+        }
+        int a = 0, b = 0, temp;
+        for (int n : nums) {
+            temp = n;
+            n = n>>digit;
+            if((n & 1) == 0){
+                a ^= temp;
+            } else {
+                b ^= temp;
+            }
+        }
+        res.emplace_back(a);
+        res.emplace_back(b);
+        return res;
+    }
+};

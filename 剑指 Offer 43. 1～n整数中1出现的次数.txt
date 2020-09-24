@@ -1,0 +1,40 @@
+//超出时间限制
+class Solution {
+public:
+    int countDigitOne(int n) {
+        int count;
+        count = 0;
+        for(int i = 1; i <= n; i++){
+            count += num(i);
+        }
+        return count;
+    }
+    int num(int x){
+        int c = 0;
+        while(x>0){    
+            if((x % 10) == 1) c++;
+            x = x / 10;
+        }
+        return c;
+    }
+};
+https://www.bilibili.com/video/BV1q7411u7Qa?from=search&seid=14085496605004652907
+class Solution {
+public:
+    int countDigitOne(int n) {
+        if(n == 0) return 0;
+        vector<int> ans;
+        //n=12345 ans =5 4 3 2 1
+        while(n) ans.push_back(n % 10), n /= 10;
+        int count = 0;
+        for(int i = ans.size() -1; i >= 0; i--){
+            int left = 0, right = 0, digit = 1;
+            for(int j = ans.size() - 1; j > i; j--) left = left * 10 + ans[j];
+            for(int j = i - 1; j >= 0; j--) right = right * 10 + ans[j], digit *= 10;
+            count += left * digit;
+            if(ans[i] == 1) count += right + 1;
+            if(ans[i] > 1) count += digit;
+        }
+        return count;
+    }
+};

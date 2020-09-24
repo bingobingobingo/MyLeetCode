@@ -1,0 +1,41 @@
+//方法1排序后取中位数
+//方法2哈希
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int num = nums.size();
+        if (num==1) return nums[0];
+        num = num >> 1;
+        map<int, int> m;
+        for (int i=0; i < nums.size(); i++) {
+            if(m.count(nums[i]) == 0) {
+                m[nums[i]] = 1;
+            }else {
+                m[nums[i]]++;
+                if (m[nums[i]] > num) {
+                    return nums[i];
+                }
+            }
+        }
+        return nums[0];
+    }
+};
+//方法3计数
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int res;
+        int num=0;
+        for (int i=0; i < nums.size(); i++) {
+            if(num == 0) {
+                res = nums[i];
+                num = 1;
+            }else if (nums[i] == res){
+                num++;
+            }else {
+                num--;
+            }
+        }
+        return res;
+    }
+};

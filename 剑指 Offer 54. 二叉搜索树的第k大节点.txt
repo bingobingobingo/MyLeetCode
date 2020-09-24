@@ -1,0 +1,19 @@
+//栈
+class Solution {
+public:
+    stack<int> nodes;
+    int kthLargest(TreeNode* root, int k) {
+        if(root == NULL) return NULL;
+        recur(root);
+        for(int i = 0; i < k - 1; i++) {
+            nodes.pop();
+        }
+        return nodes.top();
+    }
+    void recur(TreeNode* node) {
+        if(node == NULL) return;
+        recur(node->left);
+        nodes.push(node->val);
+        recur(node->right);
+    }
+};

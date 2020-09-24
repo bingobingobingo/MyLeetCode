@@ -1,0 +1,101 @@
+//排序 O(nlogn) 超出时间限制
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+
+    vector<int> nums;
+    MedianFinder() {        
+    }
+    
+    void addNum(int num) {
+        this->nums.push_back(num);
+        sort(this->nums.begin(), this->nums.end());
+    }
+    
+    double findMedian() {
+        int len = this->nums.size();
+        if((len & 1) == 0) {
+            //偶数        
+            return (this->nums[len/2] + this->nums[len/2 - 1])/2.0;
+        } else{
+            //奇数
+            return (double)this->nums[len/2];
+        }
+    }
+};
+//二分查找O(n)
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+
+    vector<int> nums;
+    MedianFinder() {        
+    }
+    
+    void addNum(int num) {
+        // this->nums.push_back(num);
+        //sort(this->nums.begin(), this->nums.end());
+        if(nums.empty()) {
+            nums.push_back(num);
+        } else {
+            nums.insert(lower_bound(nums.begin(), nums.end(), num), num);
+        }
+    }
+    
+    double findMedian() {
+        int len = this->nums.size();
+        if((len & 1) == 0) {
+            //偶数        
+            return (this->nums[len/2] + this->nums[len/2 - 1])/2.0;
+        } else{
+            //奇数
+            return (double)this->nums[len/2];
+        }
+    }
+};
+//优先级队列
+class MedianFinder {
+public:
+    /** initialize your data structure here. */
+
+    priority_queue<int> small;
+    priority_queue<int,vector<int>,greater<int>> big;
+    MedianFinder() {        
+    }
+    
+    void addNum(int num) {
+        // this->nums.push_back(num);
+        //sort(this->nums.begin(), this->nums.end());
+        // if(nums.empty()) {
+        //     nums.push_back(num);
+        // } else {
+        //     nums.insert(lower_bound(nums.begin(), nums.end(), num), num);
+        // }
+        //新元素加入大顶堆中排序，取出大顶堆中最大的加入到小顶堆
+        //small大堆从大到小的元素:3,2,1
+        //big小堆从小到大的元素:4,5,6
+        small.push(num);
+        big.push(small.top());
+        small.pop();
+        if(small.size()<big.size()) {
+            small.push(big.top());
+            big.pop();
+        }
+    }
+    
+    double findMedian() {
+        // int len = this->nums.size();
+        // if((len & 1) == 0) {
+        //     //偶数        
+        //     return (this->nums[len/2] + this->nums[len/2 - 1])/2.0;
+        // } else{
+        //     //奇数
+        //     return (double)this->nums[len/2];
+        // }
+        if(small.size()==big.size()) {
+            return (small.top() + big.top())*0.5;
+        }else {
+            return (double)small.top();
+        }
+    }
+};

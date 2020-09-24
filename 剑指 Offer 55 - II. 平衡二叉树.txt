@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if(root == NULL) {
+            return true;
+        }
+        int l = getDepth(root->left);
+        int r = getDepth(root->right);
+        int d = l - r;
+        if(d>1 || d< -1) {
+            return false;
+        }
+        return isBalanced(root->left) && isBalanced(root->right);
+    }
+
+    int getDepth(TreeNode* node) {
+        if(node == NULL) return 0;
+        int l = getDepth(node->left);
+        int r = getDepth(node->right);
+        return l>r? l+1 : r+1;
+    }
+};
+//改进使得每个节点遍历一次
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        int d = 0;
+        return recur(root, &d);
+    }
+
+    bool recur(TreeNode* root, int *depth) {
+        if(root == NULL) {
+            *depth = 0;
+            return true;
+        }
+        int l = 0;
+        int r = 0;
+        if(recur(root->left, &l) && recur(root->right, &r)) {
+            int d = l - r;
+            if(d <= 1 && d >= -1) {
+                *depth = l > r ? l+1: r+1;
+                return  true;
+            }
+        }
+        return false;
+    }
+};

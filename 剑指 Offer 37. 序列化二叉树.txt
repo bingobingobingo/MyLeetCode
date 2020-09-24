@@ -1,0 +1,136 @@
+//广度优先遍历
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (root == NULL) {
+            return "";
+        }
+        string res;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* temp = q.front();
+            q.pop();
+            if (temp == NULL) {
+                //res += "null";
+                res.push_back('$');
+            } else {
+                //res += to_string(temp->val);
+                res.append(to_string(temp->val));
+                q.push(temp->left);
+                q.push(temp->right);
+            }
+            res.push_back(',');
+        }
+        res.pop_back();
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data.size() == 0) {
+            return NULL;
+        }
+        vector<TreeNode*> tree;
+        for (int i = 0; i < data.size(); i++) {
+            if (data[i] == ',') {
+                continue;
+            } else if (data[i] == '$') {
+                tree.push_back(NULL);
+            } else {
+                //int inti = (int)(data[i]);
+                string str = "";
+                
+                while(data[i] != ',' && i < data.size()) {
+                    str += data[i];
+                    i++;
+                }
+                TreeNode* node = new TreeNode(stoi(str));
+                tree.push_back(node);
+            }       
+        }
+        int j = 1;
+        for(int i = 0; j < tree.size(); ++i) {
+            if(tree[i]==NULL) continue;
+            if(j<tree.size()) tree[i]->left = tree[j++];
+            if(j<tree.size()) tree[i]->right = tree[j++];
+        }
+        return tree[0];
+    }
+
+
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
+
+//深度优先遍历
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+
+        string res = "";
+        dfs(root, res);
+        res.pop_back();
+        // cout<< res <<endl;
+        return res;
+    }
+    string dfs(TreeNode* node, string& str) {
+        if(node == NULL) {
+            str.append("$ ");
+        } else {
+            str.append(to_string(node->val));
+            str.push_back(' ');
+            dfs(node->left, str);
+            dfs(node->right, str);
+        }
+        return str;
+    }
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data.size() == 0) {
+            return NULL;
+        }
+        istringstream str(data);
+        return ddfs(str);
+    }
+
+    TreeNode* ddfs(istringstream& str) {
+        string s;
+        str>>s;
+        if(s=="$")   return  nullptr;
+        // cout<< s;
+        TreeNode* node = new TreeNode(stoi(s));
+        node->left = ddfs(str);
+        node->right = ddfs(str);
+        return node;
+    }
+
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));

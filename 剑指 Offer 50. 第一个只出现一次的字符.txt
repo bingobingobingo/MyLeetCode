@@ -1,0 +1,41 @@
+//暴力计算每个char出现的次数
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        if(s == "") return ' ';
+        map<char, int> m;
+        m[s[0]] = 1;
+        for(int i = 1; i < s.size(); i++) {
+            if(m.count(s[i]) > 0) {
+                m[s[i]]++;
+            } else {
+                m[s[i]] = 1;
+            }
+        }
+        for(int i = 0; i < s.size(); i++){
+            if(m[s[i]] == 1) return s[i];
+        }
+        return ' ';
+    }
+};
+//对开头是大量重复字母有优化
+class Solution {
+public:
+    char firstUniqChar(string s) {
+        if(s == "") return ' ';
+        map<char, int> m;
+        vector<char> dic;     
+        for(int i = 0; i < s.size(); i++) {
+            if(m.count(s[i]) > 0) {
+                m[s[i]]++;
+            } else {
+                m[s[i]] = 1;
+                dic.push_back(s[i]);
+            }
+        }
+        for(int i = 0; i < dic.size(); i++){
+            if(m[dic[i]] == 1) return dic[i];
+        }
+        return ' ';
+    }
+};

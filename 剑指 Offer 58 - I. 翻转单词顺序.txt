@@ -1,0 +1,65 @@
+//栈
+class Solution {
+public:
+    string reverseWords(string s) {
+        if(s.size() < 1) return s;
+        stack<string> sta;
+        string res = "";
+        int i = 0;
+
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == ' ') {
+                continue;
+            } else {
+                res = "";
+                while(i < s.size() && s[i] != ' ') {
+                    res += s[i];
+                    i++;
+                }
+                sta.push(res);
+            }
+        }
+        res = "";
+        while(!sta.empty()){
+            res.append(sta.top());
+            res += " ";
+            sta.pop();
+        }
+        return res.substr(0, res.size() - 1);
+    }
+};
+//栈+istringstream
+class Solution {
+public:
+    string reverseWords(string s) {
+        if(s.size() < 1) return s;
+        stack<string> sta;
+        string res, str;
+        istringstream ss(s);
+        while(ss>>str) sta.push(str), sta.push(" ");
+        if(!sta.empty()) sta.pop();
+        while(!sta.empty()) res+=sta.top(), sta.pop();
+        return res;
+    }
+};
+//双指针
+class Solution {
+public:
+    string reverseWords(string s) {
+        if(s.size() < 1) return s;
+        string res = "";
+        int i = s.size() - 1, j = s.size() - 1;
+        while(i >= 0) {
+            if(s[i] == ' ') {
+                i--;
+                continue;
+            }
+            j = i;
+            while(i >= 0 && s[i] != ' '){
+                i--;
+            }
+            res.append(s.substr(i + 1, j - i) + " ");
+        }
+        return res.substr(0, res.size() - 1);
+    }
+};

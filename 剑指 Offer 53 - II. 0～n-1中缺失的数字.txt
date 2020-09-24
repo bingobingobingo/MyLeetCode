@@ -1,0 +1,22 @@
+二分查找
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int i = 0;
+        int j = nums.size() - 1;
+        if(j == 0) return !nums[0];
+        while(i < j) {
+            int mid = (i + j) / 2;
+            if(mid == nums[mid]) {
+                i = mid + 1;
+            } else if(mid < nums[mid]) {
+                j = mid - 1;
+            }
+        }
+        if(i < nums[i]) {
+            return i;
+        } else {
+            return i+1;
+        }   
+    }
+};

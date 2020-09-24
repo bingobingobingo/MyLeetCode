@@ -1,0 +1,49 @@
+//set去重
+class Solution {
+public:
+    vector<string> permutation(string s) {
+        set<string> res;
+        recur(s, 0, res);
+        return vector<string>(res.begin(), res.end());
+    }
+    void recur(string &s, int x, set<string> &res) {
+        if(x == s.size()){
+            res.insert(s);
+        } else {
+            for(int i = x; i < s.size(); i++){
+                swap(s[i], s[x]);
+                recur(s,x+1,res);
+                swap(s[i], s[x]);
+            }
+        }
+    }
+};
+//
+class Solution {
+public:
+    vector<string> permutation(string s) {
+        vector<string> res;
+        recur(s, 0, res);
+        return res;
+    }
+    void recur(string &s, int x, vector<string> &res) {
+        if(x == s.size()){
+            res.push_back(s);
+        } else {
+            for(int i = x; i < s.size(); i++){
+                //避免重复 如果s[i]出现在[x,i)区间内说明会交换两个同样的字符
+                if(!is_have(s, i, x)){
+                    swap(s[i], s[x]);
+                    recur(s,x+1,res);
+                    swap(s[i], s[x]);
+                }
+            }
+        }
+    }
+    bool is_have(string s, int i, int x){
+        for(int j=x; j < i; j++) {
+            if(s[j]==s[i]) return true;
+        }
+        return false;
+    }
+};

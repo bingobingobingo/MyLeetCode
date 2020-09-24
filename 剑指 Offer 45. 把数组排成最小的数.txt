@@ -1,0 +1,87 @@
+//自定义快排
+class Solution {
+public:
+    string minNumber(vector<int>& nums) {
+        vector<string> strs;
+
+        for(int i = 0; i < nums.size(); i++) {
+            strs.push_back(to_string(nums[i]));
+        }
+        myquickSort(strs, 0, strs.size()-1);
+        string res = "";
+        for(int i = 0; i < strs.size(); i++) {
+            res += strs[i];
+        }
+        return res;
+    }
+    void myquickSort(vector<string>& strs, int low, int high) {
+        if (low >= high || low < 0 || high >= strs.size()) return;
+        string flag = strs[low];
+        int l = low;
+        int r = high;
+        while(low < high) {
+            //strs[high] > flag
+            while(low < high) {
+                if(copmare(strs[high], flag)) {
+                    high--;
+                } else {
+                    strs[low++] = strs[high];
+                    break;    
+                }  
+            }
+            while(low<high) {
+                if(!copmare(strs[low], flag)) {
+                    low++;
+                } else {
+                    strs[high--] = strs[low];
+                    break;
+                }
+            }
+        }
+        strs[low] = flag;
+        myquickSort(strs, l, low - 1);
+        myquickSort(strs, low + 1, r);
+    }
+    //a>b true
+    bool copmare(string a, string b) {
+        string ab = a + b;
+        string ba = b + a;
+        if(ab.size() > ba.size()) return true;
+        if(ab.size() < ba.size()) return false;
+        for(int i = 0; i < ab.size(); i++) {
+            if(ab[i] == ba[i]) continue;
+            if(ab[i] > ba[i]) return true;
+            if(ab[i] < ba[i]) return false;
+        }
+        return 0;
+    }
+};
+//使用sort，注意
+//1.在类内 自定义比较函数cmp要定义为static类型
+//2.要先return true
+class Solution {
+public:
+    static bool cmp(string a, string b) {
+        string ab = a + b;
+        string ba = b + a;
+        return ab < ba;
+    }
+    string minNumber(vector<int>& nums) {
+        vector<string> strs;
+        string res = "";
+        // for(int i = 0; i < nums.size(); i++) {
+        //     strs.push_back(to_string(nums[i]));
+        // }
+        for (auto num : nums) {
+            strs.push_back(to_string(num));
+        }
+
+        sort(strs.begin(), strs.end(), cmp);
+        // myquickSort(strs, 0, strs.size()-1);
+        
+        for(int i = 0; i < strs.size(); i++) {
+            res += strs[i];
+        }
+        return res;
+    }
+}

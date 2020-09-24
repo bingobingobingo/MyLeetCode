@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s == "") return 0;
+        vector<int> dp(s.size());
+        dp[0] = 1;
+        int max=dp[0];
+        for(int i = 1; i < s.size(); i++) {
+            int index = s.substr(0, i).rfind(s[i]);
+            if(index ==string::npos) {
+                dp[i] = dp[i - 1] + 1;
+            } else {
+                int d = i - index;
+                if(d <= dp[i - 1]) dp[i] = d;
+                else dp[i] = dp[i - 1] + 1;
+            }
+            if(dp[i] > max) max = dp[i];
+        }
+        return max;
+    }
+
+};
+//加入哈希表优化
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s == "") return 0;
+        vector<int> dp(s.size());
+        dp[0] = 1;
+        int max=dp[0];
+        map<char, int> m;
+        m[s[0]] = 0;
+        for(int i = 1; i < s.size(); i++) {
+    
+            if(m.find(s[i]) == m.end()) {
+                dp[i] = dp[i - 1] + 1;    
+            } else {
+                int d = i - m[s[i]];
+                if(d <= dp[i - 1]) dp[i] = d;
+                else dp[i] = dp[i - 1] + 1;
+            }
+            m[s[i]] = i;
+            if(dp[i] > max) max = dp[i];
+        }
+        return max;
+    }
+
+};

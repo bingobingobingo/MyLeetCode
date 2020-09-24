@@ -1,0 +1,53 @@
+//一个个计算到第n个 超时
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if(n <= 0) return 0;
+        int num = 1;
+        int count = 1;
+        while(count < n) {
+            num++;//防止最后+1
+            if(judge(num)) {
+                count++;
+            }
+        }
+        return num;
+    }
+    bool judge(int num) {
+        while(num % 2 == 0) num /= 2; 
+        while(num % 3 == 0) num /= 3; 
+        while(num % 5 == 0) num /= 5; 
+        return (num == 1)? true: false ;
+    }
+};
+//动态规划 空间换时间
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if(n <= 0) return 0;
+        vector<int> dp(n+1);
+        dp[1] = 1;
+        int a = 1;
+        int b = 1;
+        int c = 1;
+        for(int i = 2;i <= n; i++) {
+            int dpa = dp[a] * 2;
+            int dpb = dp[b] * 3;
+            int dpc = dp[c] * 5;
+            if(dpa <= dpb && dpa <= dpc) {
+                dp[i] = dpa; 
+                a++;
+            }
+            if(dpb <= dpa && dpb <= dpc) {
+                dp[i] = dpb; 
+                b++;
+            }
+            if(dpc <= dpa && dpc <= dpb) {
+                dp[i] = dpc; 
+                c++; 
+            }
+        }
+        return dp[n];
+    }
+
+};

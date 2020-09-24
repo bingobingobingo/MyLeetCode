@@ -1,0 +1,85 @@
+//排序
+func getLeastNumbers(arr []int, k int) []int {
+    l := len(arr)
+    for i:= 0; i < k; i++ {
+        for j := l - 2; j >= i; j-- {
+            if arr[j] > arr[j + 1] {
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+            }
+        } 
+    }
+    return arr[:k]
+}
+//选择排序
+func getLeastNumbers(arr []int, k int) []int {
+    l := len(arr)
+    for i:= 0; i < k; i++ {
+        for j := i+1; j < l; j++ {
+            if arr[j] < arr[i] {
+                arr[j], arr[i] = arr[i], arr[j]
+            }
+        } 
+    }
+    return arr[:k]
+}
+//大堆（优先级队列）
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        vector<int> res(k, 0);
+        if (k==0) return res;
+        priority_queue<int> q;
+        for (int i = 0; i < arr.size(); ++i) {
+            if (i < k) {
+                q.push(arr[i]);
+            } else{
+                if (arr[i] < q.top()) {
+                    q.pop();
+                    q.push(arr[i]);
+                }
+            }
+        }
+        for (int i = 0; i < k; ++i) {
+            res[i] = q.top();
+            q.pop();        
+        }
+        return res;
+    }
+};
+//快排划分
+class Solution {
+public:
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        int n = arr.size();
+        if(n<=k) return arr;
+        if(k==0 || n==0) return vector<int>();
+        int start = 0;
+        int end = n - 1;
+        int index = parition(arr, start, end);
+        while(index != k - 1) {
+            if(index > k - 1) {
+                end = index - 1;
+            } else {
+                start = index + 1;
+            }
+            index = parition(arr, start, end);
+        }
+        return vector<int>(arr.begin(), arr.begin() + k);
+    }
+    int parition(vector<int>& arr, int start, int end) {
+        int temp = arr[start];
+        while(start < end) {
+            while(start<end && arr[end] >= temp) {
+                end--;
+            }
+            arr[start] = arr[end];
+
+            while(start<end && arr[start] <= temp) {
+                start++;
+            }
+            arr[end] = arr[start];
+        }
+        arr[start] = temp;
+        return start;
+    }   
+};

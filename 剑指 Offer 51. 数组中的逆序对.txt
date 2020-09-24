@@ -1,0 +1,66 @@
+//超出时间限制
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        if(nums.size() < 2) return 0;
+        vector<int> dp(nums.size());
+        dp[0] = 0;
+        for(int i = 1; i < nums.size(); i++) {
+            int count = 0;
+            for(int j = i - 1; j >= 0; j--) {
+                if(nums[j] > nums[i]) {
+                    count++;
+                }
+            }
+            dp[i] = dp[i - 1] + count;
+        }
+        return dp[nums.size() - 1];
+    }
+};
+//归并排序
+class Solution {
+public: 
+    int count;
+    int reversePairs(vector<int>& nums) {
+        count = 0;
+        mergeSort(nums, 0, nums.size() - 1);
+        // for(int num: nums) {
+        //     cout << num <<" ";
+        // }
+        return count;
+    }
+    void mergeSort(vector<int>& nums, int low, int high) {
+        int mid = (low + high) / 2;
+        if(high <= low) return;
+        mergeSort(nums, low, mid);
+        mergeSort(nums, mid+1, high);
+        myMerge(nums, low, mid, high);
+    }
+    void myMerge(vector<int>& nums, int low, int mid, int high) {
+        vector<int> leftSub(nums.begin() + low, nums.begin() + mid + 1);
+        vector<int> rightSub(nums.begin() + mid + 1, nums.begin() + high + 1);
+        int idxLeft = 0, idxRight = 0;
+        
+        for (int i = low; i <= high; i++) {
+            if (idxLeft > leftSub.size() - 1) {
+                nums[i] = rightSub[idxRight];
+                idxRight++;
+                continue;
+            }
+            if (idxRight > rightSub.size() - 1) {
+                nums[i] = leftSub[idxLeft];
+                idxLeft++;
+                continue;
+            }
+            if (leftSub[idxLeft] > rightSub[idxRight]) {
+                nums[i] = rightSub[idxRight];
+                idxRight++;
+                count = count + leftSub.size() - idxLeft;
+            }
+            else {
+                nums[i] = leftSub[idxLeft];
+                idxLeft++;
+            }
+        } 
+    }
+};

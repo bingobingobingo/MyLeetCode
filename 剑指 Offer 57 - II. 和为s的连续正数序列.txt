@@ -1,0 +1,55 @@
+//暴力法 循环遍历前target/2个
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        vector<vector<int>> res;
+        if(target <= 2) return res;
+        int sum = 0;
+        int j = 0;
+        vector<int> temp;
+        for(int i = 1; i <= target / 2; i++) {
+            sum = i;
+            j = i;
+            temp.clear();
+            temp.push_back(j);
+            while(sum < target) {
+                j++;
+                sum += j;
+                temp.push_back(j);
+            }
+            if(sum == target) {
+                res.push_back(temp);
+            }
+        }
+        return res;
+    }
+};
+//等差数列求和公式 s=(a1+an)*n/2
+//双指针
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        vector<vector<int>> res;
+        if(target <= 2) return res;
+        vector<int> temp;
+        int small = 1;
+        int big = 2;
+        int sum = 0;
+
+        sum = small + big;
+        while(small < big) {
+            sum = (small + big) * (big - small + 1) / 2;
+            if(sum == target) {
+                temp.clear();
+                for(int i = small; i <= big; i++) temp.emplace_back(i);
+                res.push_back(temp);
+                small++;
+            } else if(sum < target) {
+                big++;
+            } else {
+                small++;
+            }
+        }
+        return res;
+    }
+};
