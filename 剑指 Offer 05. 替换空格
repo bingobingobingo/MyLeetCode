@@ -1,0 +1,11 @@
+func replaceSpace(s string) string {
+    ret := ""
+    for _,k:= range s {
+        if k==' ' {
+            ret += "%20"
+        } else {
+            ret += string(k)
+        }
+    }
+    return ret
+}

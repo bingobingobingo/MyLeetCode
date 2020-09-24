@@ -1,0 +1,102 @@
+//简单解法
+func printNumbers(n int) []int {
+    max := int(math.Pow(10, float64(n))) - 1
+    res := make([]int, max)
+    for i := range res {
+        res[i] = i+1
+    }
+    return res
+}
+//考虑大数越界问题，转换为字符串打印出来
+//直接打印 剑指offer版
+func p(n int) {
+	number := make([]string, n)
+	for i := 0; i < 10; i++ {
+		number[0] = strconv.Itoa(i)
+		pp(number, n, 0)
+	}
+}
+func pp(number []string, len, index int) {
+	if index == len - 1{
+		fmt.Println(number)
+		return
+	}
+	for i := 0; i < 10; i++ {
+		number[index + 1] = strconv.Itoa(i)
+		pp(number, len, index + 1)
+	}
+}
+//返回数组
+func printNumbers(n int) []int {
+    base := make([]string,10) 
+    for i:=0; i<10; i++{
+        base[i] = strconv.Itoa(i)
+    }
+    for i:=1; i<n; i++{
+        units := make([]string, len(base))
+        copy(units, base)
+
+        for j:=1; j<10; j++{
+            for _, v := range units{
+                diffLen := i + 1 -len(v)
+                temp0 :=""
+                for x:= 1; x<diffLen; x++{
+                    temp0 += "0"
+                }
+                temp := strconv.Itoa(j)
+                temp = temp + temp0 + v
+                base = append(base, temp)
+            }
+        }
+    }
+    nums := make([]int,len(base))
+    for i,k:= range base{
+        nums[i],_ = strconv.Atoi(k)
+    }
+    return nums[1:]
+}
+//递归
+package main
+
+import (
+	"fmt"
+	"strconv"
+)
+var res []string
+func printNumbers(n int) []string {
+	if n <= 0 {
+		return res
+	}
+	number := make([]string, n)
+	for i := range number {
+		number[i] = "0"
+	}
+	for i := 0; i < 10; i++ {
+		number[0] = strconv.Itoa(i)
+		permutationNumbers(number, n, 1)
+	}
+	return res[1:]
+}
+
+func permutationNumbers(number []string, length int, index int) {
+	if index == length {
+		saveNumber(number)
+		return
+	} else {
+		for i := 0; i < 10; i++ {
+			number[index] = strconv.Itoa(i)
+			permutationNumbers(number, length, index + 1)
+		}
+	}
+}
+
+func saveNumber(number []string) {
+	num := ""
+	for _, k := range number {
+		num += k
+	}
+	res = append(res, num)
+}
+
+
+

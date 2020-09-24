@@ -1,0 +1,29 @@
+//大数越界
+//贪心算法 求解进可能多的3
+func mod(n int) int {
+    res := 1
+    for i := 0; i < n; i++ {
+        res = (res * 3) % 1000000007
+    }
+    return res
+}
+func cuttingRope(n int) int {
+    if n < 4{
+        return n-1
+    }
+    if n == 4 {
+        return n
+    }
+    res := 0
+    m := n % 3
+    if m == 0 {
+        res = mod(n/3)
+    }
+    if m == 1 {
+        res = (mod(n/3 - 1) * 4 ) % 1000000007
+    }
+    if m == 2 {
+        res = (mod(n/3) * 2 ) % 1000000007
+    }
+    return res
+}

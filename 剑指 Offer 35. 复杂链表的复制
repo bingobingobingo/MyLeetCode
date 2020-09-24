@@ -1,0 +1,58 @@
+//分解为三步进行求解
+//1.复制next
+//2.复制random
+//3.分离
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    cloneNodes(head)
+    connectSiblingNodes(head)
+    return reconnectNodes(head)
+}
+func cloneNodes(head *Node) {
+    pNode := head
+    for pNode != nil {
+        newNode := new(Node)
+        newNode.Val = pNode.Val
+        newNode.Next = pNode.Next
+        newNode.Random = nil
+
+        pNode.Next = newNode
+        //&Node{Val: pNode.Val, Next: pNode.Next, Random: pNode.Random}
+        pNode = newNode.Next
+    }
+}
+func connectSiblingNodes(head *Node) {
+    pNode := head
+    for pNode != nil {
+        pClone := pNode.Next
+        if pNode.Random != nil {
+            pClone.Random = pNode.Random.Next
+        }
+        pNode = pClone.Next
+    }
+}
+func reconnectNodes(head *Node) *Node {
+    pNode := head
+    var pCloneHead *Node
+
+    if pNode != nil {
+        pCloneHead = pNode.Next
+    }
+    for pNode != nil {
+        pClone := pNode.Next
+        pNode.Next = pClone.Next
+        if pNode.Next != nil {
+            pClone.Next = pNode.Next.Next
+        }
+        pNode = pNode.Next
+    }
+    return pCloneHead
+}

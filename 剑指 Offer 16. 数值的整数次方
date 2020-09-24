@@ -1,0 +1,52 @@
+//暴力循环 超出时间限制
+func myPow(x float64, n int) float64 {
+    if n < 0 {
+        x = 1 / x
+        n = -n
+    }
+    res := x
+    if n == 0 {
+        return 1
+    }
+    for i := 1; i < n; i++ {
+        res = res * x
+    }
+    return res
+}
+//位运算
+func myPow(x float64, n int) float64 {
+    if n < 0 {
+        x = 1 / x
+        n = -n
+    }
+    res := float64(1)
+    if n == 0 {
+        return 1
+    }
+    for n!=0 {
+        if n&1 == 1{
+            res = res * x
+        }
+        n = n >> 1
+        x = x * x
+    }
+    return res
+}
+//递归 x^n = (x^2)^(n/2)
+func myPow(x float64, n int) float64 {
+    if n == 0 {
+        return 1
+    }
+    if n < 0 {
+        return myP(1/x, -n)
+    }
+    return myP(x, n)
+}
+
+func myP(x float64, n int) float64 {
+    if n&1 == 0 {
+        return myPow(x*x, n/2)
+    } 
+    return myPow(x*x, n/2) * x
+}
+

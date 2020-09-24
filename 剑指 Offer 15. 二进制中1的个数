@@ -1,0 +1,31 @@
+//暴力循环
+func hammingWeight(num uint32) int {
+    count := 0
+    for num != 0 {
+        if (num % 2) == 1 {
+            count++
+        }
+        num = num/2
+    }
+    return count
+}
+//位运算 n&(n-1)每次运算后二进制形式下末尾的1变0
+func hammingWeight(num uint32) int {
+    count := 0
+    for num != 0 {
+        count++
+        num = num & (num-1)
+    }
+    return count
+}
+//转为字符串
+func hammingWeight(num uint32) int {
+    count := 0
+    nums:=fmt.Sprintf("%b",num)
+    for _, k := range nums {
+        if k == '1' {
+            count++
+        }        
+    }
+    return count
+}

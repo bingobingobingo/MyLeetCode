@@ -1,0 +1,59 @@
+//递归
+// 终止条件：p为空时，s为空返回true，s不空返回false
+// first标志首位是否相等，p[0]是.也表示相等
+// (1)如果p的第2位为*
+//    ①首位相同 则等同于判断s[1:]和p （忽略s[0]）
+//    ②首位不同 则等同于判断s和p[2:] （将p前两位x*和空值配对）
+// (2)否则不要期待奇迹出现了，
+//    首位如果相等就各向后移一位，判断s[1:]和p[1:]
+//    如果不等就是false
+// 这里利用了go字符串的截断符号
+func isMatch(s string, p string) bool {
+    if len(p) == 0 {
+        return len(s) == 0
+    }
+    var start bool
+    if len(s) > 0 && (s[0] == p[0] || p[0] == '.') {
+        start = true
+    }
+    if len(p) > 1 && p[1] == '*' {
+        return (start && isMatch(s[1:], p)) || isMatch(s, p[2:])  // 继续匹配，使得*能够匹配多个重复的 || 跳过去匹配下一个模式
+    }
+    return start && isMatch(s[1:], p[1:])
+}
+//动态规划
+func isMatch(s string, p string) bool {
+    row, col := len(s), len(p)
+    dp := make([][]bool, row + 1)
+    for i := 0; i <= row; i++ {
+        dp[i] = make([]bool, col + 1)
+    }
+    for i := 0; i <= row ; i++ {
+        for j := 0; j <= col; j++ {
+            if j == 0 {
+                dp[i][j] = i == 0
+            } else {
+                if p[j - 1] != '*' {
+					//第i个字符和第j个模式匹配，则dp[i][j]是否匹配等同于dp[i - 1][j - 1]
+                    if i > 0 && (s[i - 1] == p[j - 1] || p[j - 1] == '.'){
+                        dp[i][j] = dp[i - 1][j - 1]
+                    }
+                } else {
+                    var res1, res2 bool
+					//忽略*和它前面的那个字符，因为*可以匹配0个字符，则dp[i][j]是否匹配等同于dp[i][j - 2]
+                    if j >= 2 {  
+                        res1 = dp[i][j - 2]
+                    }
+					//字符中第一个字符和模式中'*'前的字符匹配，则保持模式不变，继续去匹配字符串中下一个字符，dp[i][j]是否匹配等同于dp[i-1][j]
+                    if i >= 1 && j >= 2 && (s[i - 1] == p[j - 2] || p[j - 2] == '.') {
+                        res2 = dp[i - 1][j]
+                    }
+                    dp[i][j] = res1 || res2
+                }
+            }
+        }
+    }
+    
+    return dp[row][col]
+}
+//递归的动态规划

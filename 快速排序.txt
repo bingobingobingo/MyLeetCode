@@ -1,0 +1,38 @@
+package main
+
+import "fmt"
+//快速排序
+func quickSort(num []int, l, r int) {
+	if l < r {
+		temp := num[l]
+		low := l
+		high := r
+		for low < high {
+			for low < high && num[high] > temp {
+				high--
+			}
+			if low < high {
+				num[low] = num[high]
+				low++
+			}
+			for low < high && num[low] < temp {
+				low++
+			}
+			if low < high {
+				num[high] = num[low]
+				high--
+			}
+		}
+		num[low] = temp
+		quickSort(num, l, low-1)
+		quickSort(num, low+1, r)
+	}
+}
+
+func main() {
+	num := []int{30,40,60,10,20,50}
+
+
+	quickSort(num, 0, len(num) - 1)
+	fmt.Println(num)
+}

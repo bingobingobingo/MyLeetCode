@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+//递归
+func reversePrint(head *ListNode) []int {
+    if head == nil {
+        return nil
+    }
+    return getValur(head)
+}
+func getValur(head *ListNode) []int{
+    if head.Next != nil {
+        nums := getValur(head.Next)
+        nums = append(nums, head.Val)
+        return nums
+    }
+    return []int{head.Val}
+}
+//反转
+func reversePrint(head *ListNode) []int {
+    if head == nil {
+        return nil
+    }
+    var res []int
+    for head != nil {
+        res = append(res, head.Val)
+        head = head.Next
+    }
+   for i,j := 0, len(res) -1; i < j; i++ {
+		res[i], res[j] = res[j], res[i]
+		j--
+	}
+    return res
+}
+

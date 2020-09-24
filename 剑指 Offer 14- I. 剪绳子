@@ -1,0 +1,63 @@
+//递归求解 自顶向下-超时
+func max(x, y int) int {
+    if x < y {
+        x = y
+    }
+    return x
+}
+func cuttingRope(n int) int {
+    if n == 2 {
+        return 1
+    }
+    res := -1 
+    for i :=1; i <= n; i++ {
+        res = max(res, max(i *(n-i), i * cuttingRope(n-i)))
+    }
+    return res
+}
+//改进递归-加入数组 避免重复计算
+func max(x, y int) int {
+	if x < y {
+		x = y
+	}
+	return x
+}
+func count(n int, f []int) int {
+	if n == 2 {
+		return 1
+	}
+	if f[n] != 0 {
+		return f[n]
+	}
+
+	res := -1
+	for i :=1; i <= n; i++ {
+		res = max(res, max(i *(n-i), i * count(n-i, f)))
+	}
+	f[n] = res
+	return res
+}
+
+func cuttingRope(n int) int {
+	f := make([]int, n+1)
+
+	return count(n, f)
+
+}
+//动态规划 自底向上
+func max(x, y int) int {
+	if x < y {
+		x = y
+	}
+	return x
+}
+func cuttingRope(n int) int {
+	dp := make([]int, n+1)
+    dp[2] = 1
+    for i := 3; i < n+1; i++ {
+        for j:= 0 ; j < i ; j++ {
+            dp[i] = max(dp[i], max((i - j) * j, j * dp[i - j]))
+        }
+    }
+	return dp[n]
+}

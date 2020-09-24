@@ -1,0 +1,39 @@
+//A.B E/e C  其中AC是有符号整数，B是无符号整数
+func isNumber(s string) bool {
+    if len(s) == 0 {
+        return false
+    }
+    s = strings.TrimSpace(s)
+    var numeric, tmpnumeric bool
+    numeric, s = scanInt(s)
+
+    if len(s) > 0 && s[0] == '.' {
+        s = s[1:]
+        tmpnumeric, s = scanUnsignedInt(s)
+		//此处用或，小数点的前面或后面可以没有数，例如：.123, 123. 是数字
+        numeric = numeric || tmpnumeric
+    }
+    if len(s) > 0 && (s[0] == 'e' || s[0] == 'E') {
+        s = s[1:]
+        tmpnumeric, s = scanInt(s)
+		//此处用并，e/E的前面或后面没有整数时不是数字，例如：.e3, e4, 12e, 12e+5.4不是数字
+        numeric = numeric && tmpnumeric
+    }
+    return numeric && len(s) == 0
+}
+func scanInt(s string) (bool, string) {
+    if len(s) == 0 {
+        return false, s
+    }
+	if s[0] == '+' || s[0] == '-' {
+		return scanUnsignedInt(s[1:])
+	}
+	return scanUnsignedInt(s)
+}
+func scanUnsignedInt(s string) (bool, string) {
+    length := len(s)
+	for len(s)> 0 && s[0] >= '0' && s[0] <= '9' {
+		s = s[1:]
+	}
+	return length > len(s), s
+}

@@ -1,0 +1,25 @@
+//使用MAP
+func findRepeatNumber(nums []int) int {
+    m := make(map[int]int)
+    for _,k := range nums {
+        v := m[k]
+        if v == 0 {
+            m[k] = 1
+        } else {
+            return k
+        }
+    }
+    return 0
+}
+//原地排序
+func findRepeatNumber(nums []int) int {
+    for i,k := range nums {
+        for i != k {
+            if nums[k] == k{
+               return  k
+            }           
+            nums[k], nums[i] = k, nums[k] //k=nums[i]
+        }
+    }
+    return 0
+}

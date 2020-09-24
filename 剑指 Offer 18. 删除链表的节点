@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func deleteNode(head *ListNode, val int) *ListNode {
+
+    temp := head
+    if temp.Val == val {
+        return head.Next
+    }
+    for temp.Next != nil {
+        n := temp.Next
+         if n.Val == val {
+            temp.Next = n.Next
+            return head
+        }
+        temp = temp.Next
+    }
+    return head
+}
+//递归 效率差不多 看着简洁？
+func deleteNode(head *ListNode, val int) *ListNode {
+    if head == nil {
+        return head
+    }
+    if head.Val == val {
+        return head.Next
+    }
+    head.Next = deleteNode(head.Next, val)
+    return head
+}

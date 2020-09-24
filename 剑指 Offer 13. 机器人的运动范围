@@ -1,0 +1,65 @@
+//关键是visited避免重复
+//DFS
+func movingCount(m int, n int, k int) int {
+	visited := make([][]bool, m)
+	for i := range visited {
+		visited[i] = make([]bool,n)
+	}
+	return dfs(0, 0, k, m, n, visited)
+}
+
+func dfs(i,j, k, m, n int, visited [][]bool) int {
+	if  i >= m || j>= n ||  (sum(i) + sum(j)) > k || visited[i][j] {
+		return 0
+	}
+	visited[i][j] = true
+    return 1 + dfs(i+1, j, k, m, n, visited) + dfs(i, j+1, k, m, n, visited)
+	// return 1 + dfs(i+1, j, k, m, n, visited) + dfs(i-1, j, k, m, n, visited) + dfs(i, j+1, k, m, n, visited) + dfs(i, j - 1, k, m, n, visited)
+}
+
+func sum(x int) int {
+	sum := 0
+	for x != 0 {
+		sum += x%10
+		x = x/10
+	}
+	return sum
+}
+//BFS
+type pos struct {
+	x int
+	y int
+}
+
+func movingCount(m int, n int, k int) int {
+	visited := make([][]bool, m)
+	for i := range visited {
+		visited[i] = make([]bool,n)
+	}
+    count := 0
+	queue := make([]pos,0)
+	queue = append(queue, pos{0,0})
+	for len(queue) != 0 {
+		x := queue[0].x
+		y := queue[0].y
+		if  x >= m || y >= n ||  sum(x) + sum(y) > k || visited[x][y] {
+			queue = queue[1:]
+			continue
+		}
+		visited[x][y] = true
+		queue = queue[1:]
+		queue = append(queue, pos{x+1,y})
+		queue = append(queue, pos{x,y+1})
+		count++
+	}
+		return count
+}
+
+func sum(x int) int {
+	sum := 0
+	for x != 0 {
+		sum += x%10
+		x = x/10
+	}
+	return sum
+}
