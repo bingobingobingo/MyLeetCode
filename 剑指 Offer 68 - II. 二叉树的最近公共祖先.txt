@@ -1,0 +1,69 @@
+//保存到两个节点的路径后转换为求公共链表的第一个公共节点
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        list<TreeNode*> listP;
+        list<TreeNode*> listQ;
+        getPath(root, p, listP);
+        getPath(root, q, listQ);
+        TreeNode* res;
+        while(!listP.empty() && !listQ.empty()) {
+            if(listP.front() == listQ.front()) {
+                res = listP.front();
+                listP.pop_front();
+                listQ.pop_front();
+            } else {
+                break;
+            }
+        }
+        return res;
+    }
+    bool getPath(TreeNode* root, TreeNode* node, list<TreeNode*> &l) {
+        if(root == NULL) {
+            return false;
+        }
+        l.push_back(root);
+        if(root == node) {
+            return true;
+        }
+        bool found = getPath(root->left, node, l) || getPath(root->right, node, l);    
+        if(!found) {
+            l.pop_back();
+        }
+        return found;
+    }
+};
+//二叉树遍历递归
+//最近公告父节点满足以下之一
+//1.==p
+//2.==q
+//3.p和q分别是root的左右节点
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == NULL){
+            return NULL;
+        }
+        if(root == p || root == q) {
+            return root;
+        }
+        TreeNode* left = lowestCommonAncestor(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor(root->right, p, q);
+        if(left == NULL){
+            return right;
+        }
+        if(right == NULL) {
+            return left;
+        }
+        return root;
+    }
+};
