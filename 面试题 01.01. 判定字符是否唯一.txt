@@ -1,0 +1,14 @@
+//位运算 将26个字母转换为k = c - ‘a’，然后把1左移K位
+//把x的k位置为1，之后通过与操作比较第K位
+class Solution {
+public:
+    bool isUnique(string astr) {
+        if(astr.size() < 2) return true;
+        int x = 0;
+        for(auto c: astr) {
+            if((x & (1 << (c - 'a'))) != 0) return false;
+            x |= 1 << (c - 'a') ;
+        }
+        return true;
+    }
+};

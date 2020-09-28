@@ -1,0 +1,38 @@
+//循环 超时
+class Solution {
+public:
+    vector<int> constructArr(vector<int>& a) {
+        vector<int> res(a.size(),1);
+        if(a.size() < 1) return res;
+        for(int i = 0; i < a.size(); i++) {
+            for(int j = 0; j < a.size(); j++) {
+                if(j==i) {
+                    continue;
+                } else {
+                    res[i] *= a[j];
+                }
+            }
+        }
+        return res;
+    }
+};
+//B[i]的左右分别计算 B[i] = C[i] * D[i]
+//C[i] = C[i-1] * A[i-1] D[i] = D[i+1] * A[i+1]
+class Solution {
+public:
+    vector<int> constructArr(vector<int>& a) {
+        vector<int> c(a.size(),1);
+        if(a.size() < 1) return c;
+        vector<int> d(a.size(),1);
+        c[0] = 1;
+        d[a.size() - 1] = 1;
+        for(int i = 1; i < a.size(); i++) {
+            c[i] = c[i-1] * a[i-1];
+        }
+        for(int i = a.size() - 2; i >= 0; i--) {
+            d[i] = d[i+1] * a[i+1];
+            c[i] = c[i] * d[i];
+        }
+        return c;
+    }
+};

@@ -1,0 +1,14 @@
+//位运算
+//注意C++中负数的左移<<要转换为无符号数
+class Solution {
+public:
+    int add(int a, int b) {
+        int carry = 0;
+        while(b != 0) {
+            carry = (unsigned int)(a & b) << 1;
+            a ^= b;
+            b = carry;
+        }
+        return a;
+    }
+};

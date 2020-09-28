@@ -1,0 +1,20 @@
+//排序后比较
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size() == 0) return "";
+        sort(strs.begin(), strs.end());
+        string res1 = strs[0];
+        string res2 = strs[strs.size() - 1];
+        // cout<<res1<<endl;
+        // cout<<res2<<endl;
+
+        int index = 0;
+        while(index < res1.size() && index < res2.size()) {
+            if(res1[index] == res2[index]) index++;
+            else break;
+        }
+        // cout<<index;
+        return res1.substr(0, index);
+    }
+};

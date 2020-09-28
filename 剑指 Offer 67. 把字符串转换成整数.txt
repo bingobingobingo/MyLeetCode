@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int strToInt(string str) {
+        if(str.size() < 1) return 0;
+        int start = 0;
+        while(start < str.size() && str[start] == ' ') {
+            start++;
+        }
+        string res ="";
+        int sign = 1;
+        if(str[start] == '-') {
+            sign = -1;
+            start++;
+        } else if(str[start] == '+') {
+            sign = 1;
+            start++;
+        } else if(str[start] < '0' || str[start] > '9') {
+            return 0;
+        } 
+        
+        int index = start;
+        while(index < str.size() && str[index] >= '0' && str[index] <= '9') {
+            res += str[index];
+            index++;
+        }
+        long long r = 0;
+        for(auto c: res) {
+            r = r * 10 + c - '0';
+            if(sign == 1 && (r > INT_MAX)) {
+                return INT_MAX;
+            } else if(sign == -1 && (r > INT_MAX)) {
+                return INT_MIN;
+            }
+        }
+        return (int)r * sign;
+    }
+};

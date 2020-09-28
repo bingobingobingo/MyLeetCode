@@ -1,0 +1,8 @@
+//&&运算的短路性： A&&B时，A=false 则后面的B不会执行
+class Solution {
+public:
+    int sumNums(int n) {
+        (n>0)  && ((n += sumNums(n - 1)) > 0);
+        return n;
+    }
+};
