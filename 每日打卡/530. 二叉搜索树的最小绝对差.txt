@@ -1,0 +1,38 @@
+//中序遍历的结果是递增的
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int getMinimumDifference(TreeNode* root) {
+        if(root == NULL || (root->left == NULL && root->right == NULL)) {
+            return NULL;
+        }
+        int min = INT_MAX;
+        int pre = -1;
+        recur(root, min, pre);
+        return min;
+    }
+    void recur(TreeNode* node, int& min, int& pre) {
+        if(node == NULL) {
+            return;
+        }
+        recur(node->left, min, pre);
+        if(pre == -1) {
+            pre = node->val;
+        } else{
+            if(abs(node->val - pre) < min){
+                min = abs(node->val - pre);
+            }
+            pre = node->val;
+        }
+        
+        recur(node->right, min, pre);
+    }
+};
