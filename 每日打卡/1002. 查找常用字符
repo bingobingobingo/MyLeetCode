@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<string> commonChars(vector<string>& A) {
+        vector<int> freq(26,0);
+       
+        vector<string> res;
+        for(char c: A[0]) {
+            freq[c - 'a']++;
+        }
+
+        for(string word: A) {
+            vector<int> temp(26,0);
+            for(char c: word) {
+                temp[c - 'a']++;
+            }
+            for(int i = 0; i < 26; i++) {
+                if(temp[i] < freq[i]) {
+                    freq[i] = temp[i];
+                }
+            }
+        }
+        for(int i = 0; i < 26; i++) {
+            for(int j = 0; j < freq[i]; j++) {
+                //string的构造函数把char转为string：string(size_t n, char c)
+                res.emplace_back(1,i+'a');
+            }          
+        }
+        return res;
+    }
+};
