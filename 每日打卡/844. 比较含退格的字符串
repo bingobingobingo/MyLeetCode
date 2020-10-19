@@ -1,0 +1,64 @@
+//字符串看作栈
+class Solution {
+public:
+    bool backspaceCompare(string S, string T) {
+        return build(S) == build(T);
+    }
+    string build(string str) {
+        string ret = "";
+        for(char c: str) {
+            if(c != '#') {
+                ret.push_back(c);
+            } else if(!ret.empty()) {
+                ret.pop_back();
+            }
+        }
+        return ret;
+    }
+};
+//指针
+class Solution {
+public:
+    bool backspaceCompare(string S, string T) {
+        int s = S.size() - 1;
+        int t = T.size() - 1;
+        int skpis = 0;
+        int skipt = 0;
+        while(1) {
+            while(s>=0) {
+                if(S[s] == '#') {
+                    skpis++;
+                    s--;
+                } else if(skpis>0) {
+                    skpis--;
+                    s--;
+                } else{
+                    break;
+                }
+            }
+            while(t>=0) {
+                if(T[t] == '#') {
+                    skipt++;
+                    t--;
+                } else if(skipt>0) {
+                    skipt--;
+                    t--;
+                } else{
+                    break;
+                }
+            }
+            if(s < 0 || t < 0) {
+                break;
+            }
+            if(S[s] != T[t]) {
+                return false;
+            }
+            s--;
+            t--;
+        }
+        if(s == t && s == -1) {
+            return true;
+        }
+        return false;
+    }
+};
