@@ -1,0 +1,96 @@
+//线性表存储
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr) {
+            return;
+        }
+        deque<ListNode*> list;
+        ListNode* ptr = head->next;
+        while(ptr != nullptr) {
+            list.push_back(ptr);
+            ptr = ptr->next;
+        }
+        ListNode* temp = head;       
+        while(!list.empty()) {
+            temp->next = list.back();
+            list.pop_back();
+            temp = temp->next;
+            temp->next = nullptr;
+            if(!list.empty()) {
+                //cout<<list.size()<<endl;
+                temp->next = list.front();
+                list.pop_front();
+                temp = temp->next;
+                temp->next = nullptr;
+                //cout<<ptr->val<<endl;
+            }
+        }
+
+    }
+};
+//1.找到链表的中间节点
+//2.反转右半链表
+//3.合并链表
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr) {
+            return;
+        }
+        ListNode* mid = getMidNode(head);
+        ListNode* left = head;
+        ListNode* right = mid->next;
+        mid->next = nullptr;
+        right = reverseList(right);
+        mergeNode(left,right);
+   }
+
+    ListNode* getMidNode(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while(fast->next != nullptr && fast->next->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow;
+   }
+    ListNode* reverseList(ListNode* head) {
+        ListNode* pre = nullptr;
+        ListNode* cur = head;
+        while(cur != nullptr) {
+            ListNode* temp = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = temp;
+        }
+        return pre;
+   }
+    void mergeNode(ListNode* left, ListNode* right) { 
+        ListNode* temp = left; 
+        while(temp->next != nullptr) {
+            left = left->next;
+
+            temp->next = right;
+            right = right->next;
+            temp = temp->next;
+
+            temp->next = left;
+            temp = temp->next;
+        }
+        if(right != nullptr) {
+            temp->next = right; 
+        }
+        
+   }
+};
