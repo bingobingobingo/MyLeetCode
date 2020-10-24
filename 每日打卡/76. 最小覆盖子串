@@ -1,0 +1,49 @@
+//滑动窗口
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(s == t) {
+            return s;
+        }
+        int need[128]={0}, have[128]={0};
+
+        for(auto c: t) {
+            need[c]++;
+        }
+        int left=0, right=0, count=0, start=0, minlength=s.size();
+        while(right < s.size()) {
+            char c = s[right];
+            if(need[c]==0) {
+                right++;
+                continue;
+            }
+
+            if(need[c]>have[c]) {
+                count++;
+            }
+            have[c]++;
+            //当且仅当已有字符串已经包含了所有目标字符串的字符，且出现频次一定大于或等于指定频次
+            while(count == t.size()) {
+                if(right - left < minlength) {
+                    minlength = right - left;
+                    start = left;
+                }
+                char l = s[left];
+                if(need[l] == 0) {
+                    left++;
+                    continue;
+                }
+                if (have[l] == need[l]) {
+                    count--;
+                }
+                have[l]--;
+                left++;
+            }
+            right++;
+        }
+        if(minlength == s.size()) {
+            return "";
+        }
+        return s.substr(start, minlength+1);
+    }
+};
