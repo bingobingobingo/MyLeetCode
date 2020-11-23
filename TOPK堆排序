@@ -32,7 +32,8 @@ public:
         int i = 0;
         while(i*2 + 1 <= num) {
             int j = i*2 + 1;
-            if(j+1<=num && nums[j+1]<nums[i]) {
+            //比较j和j+1 即比较左右子树 选择较小的替换
+            if(j+1<=num && nums[j+1]<nums[j]) {
                 j++;
             }
             if(nums[i] > nums[j]) {
