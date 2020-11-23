@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        //对前k个元素建堆
+        for(int i = 0; i < k; i++) {
+            swim(nums, i);
+        }
+        
+        
+        for(int i = k; i < nums.size(); i++) {
+            if(nums[i] > nums[0]) {
+                swap(nums[0], nums[i]);
+                sink(nums, k-1);
+            }
+        }
+        for(int i = 0; i < k; i++) {
+            cout<<nums[i]<<" ";
+        }
+        return nums[0];
+    }
+
+    //上浮
+    void swim(vector<int>& nums, int index) {
+        while(index>0 && nums[index] < nums[(index-1)/2]) {
+            swap(nums[index], nums[(index-1)/2]);
+            index = (index-1) / 2;
+        }
+    }
+
+    //下沉
+    void sink(vector<int>& nums, int num) {
+        int i = 0;
+        while(i*2 + 1 <= num) {
+            int j = i*2 + 1;
+            if(j+1<=num && nums[j+1]<nums[i]) {
+                j++;
+            }
+            if(nums[i] > nums[j]) {
+                swap(nums[i], nums[j]);
+                i = j;
+            } else {
+                break;
+            }
+            
+        }
+    }
+};
