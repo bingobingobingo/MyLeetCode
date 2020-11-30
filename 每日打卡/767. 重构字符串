@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string reorganizeString(string S) {
+        if(S.length() < 2) {
+            return S;
+        }
+        int maxCount = 0;
+        vector<int> count(26, 0);
+        for(char c: S) {
+            count[c - 'a']++;
+            maxCount = max(maxCount, count[c - 'a']);
+        }
+        if(maxCount > (S.length() + 1)/2) {
+            return "";
+        }
+        string res(S.length(), ' ');
+        int even = 0;
+        int odd = 1;
+        for(int i = 0; i < 26; i++) {
+            char c = 'a' + i;
+            while(count[i] > 0 && count[i] <= (S.length() / 2) && odd < S.length()) {
+                res[odd] = c;
+                count[i]--;
+                odd+=2;
+            }
+            while(count[i] > 0) {
+                res[even] = c;
+                count[i]--;
+                even+=2;
+            }
+        }
+        
+        return res;
+    }
+};
