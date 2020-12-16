@@ -1,0 +1,61 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    // vector<int> pre;
+    // map<int, int> dic;
+    // TreeNode* build(int pre_root, int in_left, int in_right) {
+    //     if(in_left > in_right) {
+    //         return NULL;
+    //     }
+    //     TreeNode * root = new TreeNode(pre[pre_root]);
+    //     int index = dic[pre[pre_root]];
+    //     root->left = build(pre_root+1, in_left, index-1);
+    //     root->right = build(pre_root + index - in_left + 1, index+1, in_right);
+    //     return root;
+    // }
+    // TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+    //     pre = preorder;
+    //     for(int i = 0; i < inorder.size(); i++) {
+    //         dic[inorder[i]] = i;
+    //     }
+    //     return build(0, 0, preorder.size()-1);
+    // }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.size() == 0) {
+            return NULL;
+        }
+        TreeNode* root = new TreeNode(preorder[0]);
+        int len = preorder.size();
+        stack<TreeNode*> s;
+        s.push(root);
+        int inorderIndex = 0;
+        for(int i = 1; i < len; i++) {
+            int preorderVal = preorder[i];
+            TreeNode* node = s.top();
+            //第一种情况 是结点的左子树
+            if(node->val != inorder[inorderIndex]) {
+                node->left = new TreeNode(preorderVal);
+                s.push(node->left);
+            } else{
+
+                //第二种情况 是结点的右子树 或者 是其祖先结点的右子树
+                while(!s.empty() && s.top()->val == inorder[inorderIndex]) {
+                    node = s.top();
+                    s.pop();
+                    inorderIndex++;
+                }
+                node->right = new TreeNode(preorderVal);
+                s.push(node->right);
+            }
+        }
+        return root;
+    }
+};
