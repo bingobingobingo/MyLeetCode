@@ -1,0 +1,65 @@
+class Solution {
+public:
+    // int longestValidParentheses(string s) {
+    //     int res = 0;
+    //     if(s.size() < 2) {
+    //         return res;
+    //     }
+    //     stack<int> stk;
+    //     stk.push(-1);
+    //     for(int i = 0; i < s.size(); i++) {
+    //         if(s[i] == '(') {
+    //             stk.push(i);
+    //         } else{
+    //             if(!stk.empty()) {
+    //                 stk.pop();
+    //             }
+    //             if(!stk.empty()) {
+    //                 res = max(res, i-stk.top());
+    //             } else{
+    //                 stk.push(i);
+    //             }
+                
+    //         }
+    //     }
+    //     return res;
+    // }
+    int longestValidParentheses(string s) {
+        int res = 0;
+        if(s.size() < 2) {
+            return res;
+        }
+        int left = 0, right = 0;
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == '(') {
+                left++;
+            } else{
+               right++;
+            }
+
+            if(left == right) {
+                res = max(res, 2*right);
+            } else if(right > left) {
+                left = 0;
+                right = 0;
+            }
+        }
+        left = 0;
+        right = 0;
+        for(int i = s.size()-1; i >= 0 ; i--) {
+            if(s[i] == '(') {
+                left++;
+            } else{
+               right++;
+            }
+
+            if(left == right) {
+                res = max(res, 2*left);
+            } else if(right < left) {
+                left = 0;
+                right = 0;
+            }
+        }
+        return res;
+    }
+};
